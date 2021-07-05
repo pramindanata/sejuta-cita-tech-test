@@ -12,4 +12,12 @@ module.exports = {
   rules: {
     'no-console': 'warn',
   },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.js'],
+      },
+    },
+  },
 };
