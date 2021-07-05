@@ -1,0 +1,7 @@
+{
+  "watch": ["src"],
+  "exec": "npm run start",
+  "events": {
+    "start": "cls || clear"
+  }
+}
