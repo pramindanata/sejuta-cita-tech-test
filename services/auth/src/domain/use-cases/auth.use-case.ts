@@ -7,6 +7,7 @@ import { InvalidCredentialGivenException } from '../exception';
 @injectable()
 export class AuthUseCase {
   constructor(
+    @inject(Token.UserRepository)
     private userRepository: UserRepositoryContract,
 
     @inject(Token.CryptHelper)

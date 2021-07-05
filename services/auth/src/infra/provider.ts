@@ -26,6 +26,13 @@ container.register(Token.CryptHelper, {
   useFactory: (c) => c.resolve(CryptHelper),
 });
 
+container.register(Token.UserRepository, {
+  useFactory: () => {
+    // fix this
+    return {};
+  },
+});
+
 container.register(Token.Joi, {
   useValue: joi.defaults((schema) =>
     schema.options({
