@@ -5,6 +5,7 @@ export enum Token {
   PolicyDict = 'PolicyDict',
   AbilityFactory = 'AbilityFactory',
   EventEmitter = 'EventEmitter',
+  PubSubClient = 'PubSubClient',
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',

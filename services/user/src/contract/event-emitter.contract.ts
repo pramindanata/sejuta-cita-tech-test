@@ -1,3 +1,5 @@
-export interface EventEmitterContract {
-  emit(event: string, data: any): void;
+import { EventListenerDataDict } from '@/common';
+
+export interface EventEmitterContract<T = EventListenerDataDict> {
+  emit<K extends keyof T>(event: K, data: T[K]): void;
 }

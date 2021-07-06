@@ -7,6 +7,7 @@ import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
 import { UserRepository } from './db';
 import { EventEmitter } from './event-emitter';
+import { PubSubClient } from './pubsub';
 
 const container = baseContainer;
 
@@ -20,6 +21,10 @@ container.register(Token.Config, {
 
 container.register(Token.EventEmitter, {
   useFactory: (c) => c.resolve(EventEmitter),
+});
+
+container.register(Token.PubSubClient, {
+  useFactory: (c) => c.resolve(PubSubClient),
 });
 
 container.register(Token.PolicyDict, {

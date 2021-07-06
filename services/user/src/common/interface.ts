@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { ErrorRequestHandler, Request, RequestHandler } from 'express';
 import { Ability } from 'policy-authorization';
 import { User } from '@/domain';
-import { Env, PubSubSubject } from './constant';
+import { Env, Event, PubSubSubject } from './constant';
 
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
 export type ReqQuery<T> = T & qs.ParsedQs;
@@ -68,6 +68,12 @@ export interface PubSubPublisherDataDict {
   [PubSubSubject.UserCreated]: UserMessageData;
   [PubSubSubject.UserUpdated]: UserMessageData;
   [PubSubSubject.UserDeleted]: UserMessageData;
+}
+
+export interface EventListenerDataDict {
+  [Event.UserCreated]: User;
+  [Event.UserUpdated]: User;
+  [Event.UserDeleted]: User;
 }
 
 export interface MiddlewareFactory {
