@@ -4,6 +4,7 @@ export class User {
   password: string;
   role: UserRole;
   createdAt: Date;
+  updatedAt: Date;
 
   constructor(props: UserProps) {
     this.id = props.id;
@@ -11,6 +12,7 @@ export class User {
     this.password = props.password;
     this.role = props.role;
     this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
   }
 }
 
@@ -25,4 +27,5 @@ export interface UserProps {
   password: string;
   role: UserRole;
   createdAt: Date;
+  updatedAt: Date;
 }

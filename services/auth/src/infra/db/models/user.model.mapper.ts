@@ -9,6 +9,7 @@ export class UserModelMapper {
       password: model.password,
       role: model.role,
       createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
     });
 
     return user;

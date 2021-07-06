@@ -4,4 +4,5 @@ export interface UserRepositoryContract {
   getDetail(id: string): Promise<User | undefined>;
   getDetailByUsername(username: string): Promise<User | undefined>;
   create(props: CreateUserProps): Promise<User>;
+  update(user: User): Promise<void>;
 }

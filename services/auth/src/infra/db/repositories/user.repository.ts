@@ -37,4 +37,15 @@ export class UserRepository implements UserRepositoryContract {
 
     return UserModelMapper.toDomain(user);
   }
+
+  async update(user: User): Promise<void> {
+    await UserModel.updateOne(
+      { _id: user.id },
+      {
+        username: user.username,
+        password: user.password,
+        updatedAt: user.updatedAt,
+      },
+    );
+  }
 }

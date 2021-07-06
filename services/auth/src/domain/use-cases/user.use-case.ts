@@ -19,6 +19,19 @@ export class UserUseCase {
 
     return user;
   }
+
+  async update(user: User, props: UpdateUserProps): Promise<User> {
+    const updatedUser = new User({
+      id: user.id,
+      username: props.username,
+      password: props.password,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: props.updatedAt,
+    });
+
+    return updatedUser;
+  }
 }
 
 export interface CreateUserProps {
@@ -28,4 +41,10 @@ export interface CreateUserProps {
   role: UserRole;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UpdateUserProps {
+  username: string;
+  password: string;
+  updatedAt: Date;
 }
