@@ -1,10 +1,8 @@
 import { container as baseContainer, instanceCachingFactory } from 'tsyringe';
-import { getCustomRepository } from 'typeorm';
 import { AbilityFactory } from 'policy-authorization';
 import joi from 'joi';
 import { Token } from '@/common';
 import { Post, PostPolicy } from '@/domain';
-import { PostRepository, UserRepository } from './db';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
 
@@ -42,14 +40,6 @@ container.register(Token.JwtHelper, {
 
 container.register(Token.CryptHelper, {
   useFactory: (c) => c.resolve(CryptHelper),
-});
-
-container.register(Token.UserRepository, {
-  useFactory: () => getCustomRepository(UserRepository),
-});
-
-container.register(Token.PostRepository, {
-  useFactory: () => getCustomRepository(PostRepository),
 });
 
 container.register(Token.Joi, {
