@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
 import { UserRepositoryContract } from '@/contract';
-import { CreateUserProps, User } from '@/domain';
+import { CreateUserProps, UpdateUserProps, User } from '@/domain';
 import { UserModel, UserModelMapper } from '../models';
 
 @singleton()
@@ -38,14 +38,18 @@ export class UserRepository implements UserRepositoryContract {
     return UserModelMapper.toDomain(user);
   }
 
-  async update(user: User): Promise<void> {
+  async update(id: string, props: UpdateUserProps): Promise<void> {
     await UserModel.updateOne(
-      { _id: user.id },
+      { _id: id },
       {
-        username: user.username,
-        password: user.password,
-        updatedAt: user.updatedAt,
+        username: props.username,
+        password: props.password,
+        updatedAt: props.updatedAt,
       },
     );
+  }
+
+  async delete(id: string): Promise<void> {
+    await UserModel.deleteOne({ _id: id });
   }
 }

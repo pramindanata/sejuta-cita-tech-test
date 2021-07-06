@@ -21,6 +21,8 @@ export class UserUseCase {
   }
 
   async update(user: User, props: UpdateUserProps): Promise<User> {
+    await this.userRepository.update(user.id, props);
+
     const updatedUser = new User({
       id: user.id,
       username: props.username,
@@ -31,6 +33,10 @@ export class UserUseCase {
     });
 
     return updatedUser;
+  }
+
+  async delete(user: User): Promise<void> {
+    await this.userRepository.delete(user.id);
   }
 }
 
