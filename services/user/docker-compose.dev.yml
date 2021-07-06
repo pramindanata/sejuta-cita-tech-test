@@ -1,0 +1,56 @@
+version: '3'
+
+networks:
+  sc-user-net:
+    driver: bridge
+
+volumes:
+  sc-user-mongo:
+    driver: local
+  sc-user-stan:
+    driver: local
+
+services:
+  mongo:
+    image: mongo:4.4.6
+    ports:
+      - 27002:27017
+    networks:
+      - sc-user-net
+    volumes:
+      - sc-user-mongo:/data/db
+    restart: unless-stopped
+  stan:
+    image: nats-streaming:0.22.0-alpine
+    command: [
+      '-st', 'FILE',
+      '--dir', '/data/nats',
+      '-m', '8222',
+      '-p', '4222',
+      '-hbi', '5s',
+      '-hbt', '5s',
+      '-hbf', '2',
+      '-SD',
+      '-cid', 'sc-tech-test'
+    ]
+    ports:
+      - 4222:4222
+      - 8222:8222
+    networks:
+      - sc-user-net
+    volumes:
+      - sc-user-stan:/data/nats
+    restart: unless-stopped
+  stan-console:
+    image: mozgoo/nats-streaming-console
+    depends_on:
+      - stan
+    ports:
+      - 8282:8282
+    networks:
+      - sc-user-net
+    environment:
+      - 'STAN_URL=http://stan:4222'
+      - 'STAN_MONITOR_URL=http://stan:8222'
+      - 'STAN_CLUSTER=sc-tech-test'
+    restart: unless-stopped
