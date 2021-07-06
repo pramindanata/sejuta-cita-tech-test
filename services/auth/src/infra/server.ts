@@ -25,6 +25,8 @@ export function createServer(): Express {
     c(AuthController, 'login'),
   );
 
+  server.post('/token/refresh', c(AuthController, 'refresh'));
+
   server.post('/logout', c(AuthController, 'logout'));
 
   server.use(m(ExceptionHandler));

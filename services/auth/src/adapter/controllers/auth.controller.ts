@@ -1,9 +1,10 @@
 import { inject, singleton } from 'tsyringe';
 import { Request, Response } from 'express';
 import { Cookie, Token } from '@/common';
-import { JwtHelperContract } from '@/contract';
+import { ConfigHelperContract, JwtHelperContract } from '@/contract';
 import { AuthUseCase } from '@/domain';
 import { UserDto } from '../dto';
+import { UnauthenticatedException } from '../exception';
 
 @singleton()
 export class AuthController {
@@ -12,15 +13,34 @@ export class AuthController {
 
     @inject(Token.JwtHelper)
     private jwtHelper: JwtHelperContract,
+
+    @inject(Token.ConfigHelper)
+    private configHelper: ConfigHelperContract,
   ) {}
 
   async login(req: Request<any, any, LoginBody>, res: Response): Promise<any> {
     const { username, password } = req.body;
     const user = await this.authUseCase.login({ username, password });
-    const token = await this.jwtHelper.create({ sub: user.id });
+    const token = await this.jwtHelper.create({
+      sub: user.id,
+    });
 
     return res.cookie(Cookie.Token, token).json({
       data: UserDto.fromDomain(user),
+    });
+  }
+
+  async refresh(req: Request, res: Response): Promise<any> {
+    const token = req.cookies[Cookie.Token];
+
+    if (!token) {
+      throw new UnauthenticatedException();
+    }
+
+    const refreshedToken = await this.jwtHelper.refresh(token);
+
+    return res.cookie(Cookie.Token, refreshedToken).json({
+      message: 'OK',
     });
   }
 

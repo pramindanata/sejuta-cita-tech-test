@@ -2,8 +2,9 @@ import { inject, singleton } from 'tsyringe';
 import { ErrorRequestHandler } from 'express';
 import { BaseDomainException } from '@/domain';
 import { Env, ExceptionMiddlewareFactory, Token } from '@/common';
-import { BaseHTTPException } from '../exception';
+import { BaseHTTPException, UnauthenticatedException } from '../exception';
 import { ConfigHelperContract } from '@/contract';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 @singleton()
 export class ExceptionHandler implements ExceptionMiddlewareFactory {
@@ -26,6 +27,12 @@ export class ExceptionHandler implements ExceptionMiddlewareFactory {
 
       if (err instanceof BaseHTTPException) {
         return res.status(err.getCode()).json(err.getBody());
+      }
+
+      if (err instanceof JsonWebTokenError) {
+        const exception = new UnauthenticatedException();
+
+        return res.status(exception.getCode()).json(exception.getBody());
       }
 
       if (env === Env.Production) {

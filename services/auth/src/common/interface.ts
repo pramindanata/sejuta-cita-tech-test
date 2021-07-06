@@ -21,6 +21,10 @@ export interface Config {
   db: {
     host: string;
   };
+  jwt: {
+    expDurationInSecond: number;
+    refExpDurationInSecond: number;
+  };
   stan: {
     clientId: string;
     clusterId: string;
@@ -35,6 +39,8 @@ export interface ConfigKey {
   'app.port': number;
   'app.secret': string;
   'db.host': string;
+  'jwt.expDurationInSecond': number;
+  'jwt.refExpDurationInSecond': number;
   'stan.clientId': string;
   'stan.clusterId': string;
   'stan.url': string;

@@ -4,7 +4,6 @@ import { inject, singleton } from 'tsyringe';
 import { Cookie, MiddlewareFactory, Token } from '@/common';
 import { JwtHelperContract } from '@/contract';
 import { User, UserUseCase } from '@/domain';
-import { UnauthenticatedException } from '../exception';
 
 @singleton()
 export class RequestContext implements MiddlewareFactory {
@@ -41,7 +40,7 @@ export class RequestContext implements MiddlewareFactory {
       return user;
     } catch (err) {
       if (err instanceof JsonWebTokenError) {
-        throw new UnauthenticatedException();
+        return undefined;
       }
 
       throw err;
