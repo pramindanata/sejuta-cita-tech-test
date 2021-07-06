@@ -41,3 +41,16 @@ services:
     volumes:
       - sc-user-stan:/data/nats
     restart: unless-stopped
+  stan-console:
+    image: mozgoo/nats-streaming-console
+    depends_on:
+      - stan
+    ports:
+      - 8282:8282
+    networks:
+      - sc-user-net
+    environment:
+      - 'STAN_URL=http://stan:4222'
+      - 'STAN_MONITOR_URL=http://stan:8222'
+      - 'STAN_CLUSTER=sc-tech-test'
+    restart: unless-stopped
