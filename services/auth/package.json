@@ -5,31 +5,48 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "lint": "eslint",
-    "start": "node ./src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint \"./**/*.{js,ts,tsx}\"",
+    "seed:run": "node ./dist/infra/db/seeder/seed.js",
+    "seed:clear": "node ./dist/infra/db/seeder/clear.js",
+    "start": "node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.12",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^15.6.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
-    "morgan": "^1.10.0"
+    "mongoose": "^5.13.2",
+    "node-nats-streaming": "^0.3.2",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "tsyringe": "^4.5.0",
+    "typescript": "^4.3.2"
   },
   "devDependencies": {
-    "eslint": "^7.30.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-prettier": "^3.4.0",
-    "nodemon": "^2.0.9",
-    "prettier": "^2.3.2"
+    "nodemon": "2.0.7",
+    "prettier": "^2.3.0"
   }
 }
