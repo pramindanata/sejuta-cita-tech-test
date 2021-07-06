@@ -9,6 +9,7 @@ import {
   SchemaValidator,
   UserController,
   UserIndexQuerySchema,
+  UserShowParamsSchema,
 } from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
 
@@ -24,6 +25,13 @@ export function createServer(): Express {
     m(Auth),
     m(SchemaValidator, { query: UserIndexQuerySchema }),
     c(UserController, 'index'),
+  );
+
+  server.get(
+    '/users/:userId',
+    m(Auth),
+    m(SchemaValidator, { params: UserShowParamsSchema }),
+    c(UserController, 'show'),
   );
 
   server.use(m(ExceptionHandler));

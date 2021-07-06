@@ -85,10 +85,7 @@ export class SchemaValidator implements MiddlewareFactory {
           prev[key] = [];
         }
 
-        prev[key].push({
-          message: cur.message,
-          context: cur.context,
-        });
+        prev[key].push(cur.message);
 
         return prev;
       },
@@ -100,10 +97,7 @@ export class SchemaValidator implements MiddlewareFactory {
 }
 
 interface SchemaValidationInvalidData {
-  [key: string]: {
-    message: string;
-    context: any;
-  }[];
+  [key: string]: string[];
 }
 
 interface ValidatorOptions {

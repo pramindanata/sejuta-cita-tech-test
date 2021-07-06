@@ -11,7 +11,7 @@ export enum Token {
 }
 
 export const Regex = {
-  Number: /^\d+$/,
+  ObjectId: /^[0-9a-fA-F]{24}$/,
 };
 
 export enum Cookie {
