@@ -15,8 +15,8 @@ export class AuthUseCase {
   ) {}
 
   async login(props: LoginProps): Promise<User> {
-    const { email, password } = props;
-    const user = await this.userRepository.getDetailByEmail(email);
+    const { username, password } = props;
+    const user = await this.userRepository.getDetailByUsername(username);
 
     if (!user) {
       throw new InvalidCredentialGivenException();
@@ -36,6 +36,6 @@ export class AuthUseCase {
 }
 
 interface LoginProps {
-  email: string;
+  username: string;
   password: string;
 }

@@ -15,8 +15,8 @@ export class AuthController {
   ) {}
 
   async login(req: Request<any, any, LoginBody>, res: Response): Promise<any> {
-    const { email, password } = req.body;
-    const user = await this.authUseCase.login({ email, password });
+    const { username, password } = req.body;
+    const user = await this.authUseCase.login({ username, password });
     const token = await this.jwtHelper.create({ sub: user.id });
 
     return res.cookie(Cookie.Token, token).json({
@@ -32,6 +32,6 @@ export class AuthController {
 }
 
 interface LoginBody {
-  email: string;
+  username: string;
   password: string;
 }
