@@ -1,8 +1,8 @@
 export abstract class BaseDomainException extends Error {}
 
-export class EmailAlreadyTakenException extends BaseDomainException {
+export class UsernameAlreadyTakenException extends BaseDomainException {
   constructor() {
-    super('Email already taken');
+    super('Username already taken');
   }
 }
 

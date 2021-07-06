@@ -5,6 +5,7 @@ export interface UserRepositoryContract {
   getPagination(options: PaginationOptions): Promise<Pagination<User>>;
   create(props: CreateUserProps): Promise<User>;
   getDetail(id: string): Promise<User | undefined>;
+  getDetailByUsername(username: string): Promise<User | undefined>;
   update(user: User, props: UpdateUserProps): Promise<User>;
   delete(user: User): Promise<void>;
 }

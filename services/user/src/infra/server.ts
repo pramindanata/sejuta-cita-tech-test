@@ -8,6 +8,7 @@ import {
   RequestContext,
   SchemaValidator,
   UserController,
+  UserCreateBodySchema,
   UserIndexQuerySchema,
   UserShowParamsSchema,
 } from '@/adapter';
@@ -32,6 +33,13 @@ export function createServer(): Express {
     m(Auth),
     m(SchemaValidator, { params: UserShowParamsSchema }),
     c(UserController, 'show'),
+  );
+
+  server.post(
+    '/users',
+    m(Auth),
+    m(SchemaValidator, { body: UserCreateBodySchema }),
+    c(UserController, 'create'),
   );
 
   server.use(m(ExceptionHandler));

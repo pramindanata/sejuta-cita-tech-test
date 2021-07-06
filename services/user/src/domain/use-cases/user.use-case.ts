@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { Pagination, PaginationOptions, Token } from '@/common';
 import { CryptHelperContract, UserRepositoryContract } from '@/contract';
 import { User, UserRole } from '../entities';
+import { UsernameAlreadyTakenException } from '../exception';
 
 @injectable()
 export class UserUseCase {
@@ -26,9 +27,16 @@ export class UserUseCase {
   }
 
   async create(props: CreateUserProps): Promise<User> {
-    const hashedPassword = await this.cryptHelper.hash(props.password);
+    const { username, password } = props;
+    const otherUser = await this.userRepo.getDetailByUsername(username);
+
+    if (otherUser) {
+      throw new UsernameAlreadyTakenException();
+    }
+
+    const hashedPassword = await this.cryptHelper.hash(password);
     const user = await this.userRepo.create({
-      ...props,
+      username,
       role: UserRole.User,
       password: hashedPassword,
     });
@@ -37,9 +45,16 @@ export class UserUseCase {
   }
 
   async update(user: User, props: UpdateUserProps): Promise<User> {
-    const hashedPassword = await this.cryptHelper.hash(props.password);
+    const { username, password } = props;
+    const otherUser = await this.userRepo.getDetailByUsername(username);
+
+    if (otherUser) {
+      throw new UsernameAlreadyTakenException();
+    }
+
+    const hashedPassword = await this.cryptHelper.hash(password);
     const updatedUser = await this.userRepo.update(user, {
-      username: props.username,
+      username,
       password: hashedPassword,
     });
 

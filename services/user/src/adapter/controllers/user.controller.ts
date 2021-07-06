@@ -37,7 +37,23 @@ export class UserController {
       data: UserDto.fromDomain(user),
     });
   }
+
+  async create(
+    req: Request<any, any, CreateReqBody>,
+    res: Response,
+  ): Promise<any> {
+    const { username, password } = req.body;
+    const newUser = await this.userUseCase.create({ username, password });
+
+    return res.json({
+      data: UserDto.fromDomain(newUser),
+    });
+  }
 }
 
 type IndexReqQuery = ReqQuery<PaginationOptions>;
 type ShowReqParams = ReqParams<{ userId: string }>;
+interface CreateReqBody {
+  username: string;
+  password: string;
+}
