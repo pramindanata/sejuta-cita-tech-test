@@ -12,6 +12,7 @@ export type ReqParams<T> = T & {
 
 export interface Config {
   app: {
+    name: string;
     env: Env;
     host: string;
     port: number;
@@ -19,23 +20,24 @@ export interface Config {
   };
   db: {
     host: string;
-    port: number;
-    name: string;
-    user: string;
-    password: string;
+  };
+  stan: {
+    clientId: string;
+    clusterId: string;
+    url: string;
   };
 }
 
 export interface ConfigKey {
+  'app.name': string;
   'app.host': string;
   'app.env': Env;
   'app.port': number;
   'app.secret': string;
   'db.host': string;
-  'db.port': number;
-  'db.name': string;
-  'db.user': string;
-  'db.password': string;
+  'stan.clientId': string;
+  'stan.clusterId': string;
+  'stan.url': string;
 }
 
 export interface Pagination<T = any> {
