@@ -3,6 +3,7 @@ import joi from 'joi';
 import { Token } from '@/common';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
+import { UserRepository } from './db';
 
 const container = baseContainer;
 
@@ -27,10 +28,7 @@ container.register(Token.CryptHelper, {
 });
 
 container.register(Token.UserRepository, {
-  useFactory: () => {
-    // fix this
-    return {};
-  },
+  useFactory: (c) => c.resolve(UserRepository),
 });
 
 container.register(Token.Joi, {

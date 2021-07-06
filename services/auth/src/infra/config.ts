@@ -11,11 +11,7 @@ export function createConfig(): Config {
       secret: env.APP_SECRET || 'my_secret_123',
     },
     db: {
-      host: env.DB_HOST || 'localhost',
-      port: (env.DB_PORT && parseInt(env.DB_PORT)) || 5432,
-      name: env.DB_NAME || 'clean_starterkit',
-      user: env.DB_USER || 'postgres',
-      password: env.DB_PASSWORD || '',
+      host: env.DB_HOST || 'mongodb://localhost:27017/auth-service',
     },
   };
 }

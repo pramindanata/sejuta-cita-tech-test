@@ -18,10 +18,6 @@ export interface Config {
   };
   db: {
     host: string;
-    port: number;
-    name: string;
-    user: string;
-    password: string;
   };
 }
 
@@ -31,10 +27,6 @@ export interface ConfigKey {
   'app.port': number;
   'app.secret': string;
   'db.host': string;
-  'db.port': number;
-  'db.name': string;
-  'db.user': string;
-  'db.password': string;
 }
 
 export interface Pagination<T = any> {
