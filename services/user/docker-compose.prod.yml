@@ -1,0 +1,48 @@
+version: '3'
+
+networks:
+  clean-kit-prod-net:
+    driver: bridge
+
+volumes:
+  clean-kit-prod-pg:
+    driver: local
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=production
+      - APP_HOST=localhost
+      - APP_PORT=4000
+      - APP_SECRET=
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=clean_starterkit
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+    restart: always
+    networks:
+      - clean-kit-prod-net
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=clean_starterkit
+      - TZ=UTC
+      - PGTZ=UTC
+    ports:
+      - 5432:5432
+    restart: always
+    networks:
+      - clean-kit-prod-net
+    volumes:
+      - clean-kit-prod-pg:/var/lib/postgresql/data
