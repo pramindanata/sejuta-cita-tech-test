@@ -69,3 +69,15 @@ export interface RequestPayloadSchema {
 export interface PubSubSubscriber {
   handle(data: any, message: Message): Promise<void>;
 }
+
+export interface UserCreatedMessageData {
+  id: string;
+  username: string;
+  password: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type UserUpdatedMessageData = UserCreatedMessageData;
+export type UserDeletedMessageData = UserCreatedMessageData;

@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
 import { UserRepositoryContract } from '@/contract';
-import { User } from '@/domain';
+import { CreateUserProps, User } from '@/domain';
 import { UserModel, UserModelMapper } from '../models';
 
 @singleton()
@@ -21,6 +21,19 @@ export class UserRepository implements UserRepositoryContract {
     if (!user) {
       return undefined;
     }
+
+    return UserModelMapper.toDomain(user);
+  }
+
+  async create(props: CreateUserProps): Promise<User> {
+    const user = await UserModel.create({
+      _id: props.id,
+      username: props.username,
+      password: props.password,
+      role: props.role,
+      createdAt: props.createdAt,
+      updatedAt: props.updatedAt,
+    });
 
     return UserModelMapper.toDomain(user);
   }
