@@ -4,6 +4,7 @@ import { Cookie, Token } from '@/common';
 import { ConfigHelperContract, JwtHelperContract } from '@/contract';
 import { AuthUseCase } from '@/domain';
 import { UserDto } from '../dto';
+import { UnauthenticatedException } from '../exception';
 
 @singleton()
 export class AuthController {
@@ -20,22 +21,26 @@ export class AuthController {
   async login(req: Request<any, any, LoginBody>, res: Response): Promise<any> {
     const { username, password } = req.body;
     const user = await this.authUseCase.login({ username, password });
-    const currentSecond = Math.floor(Date.now() / 1000);
-    const jwtExpDurationInSecond = this.configHelper.get(
-      'jwt.expDurationInSecond',
-    );
-    const jwtRefExpDurationInSecond = this.configHelper.get(
-      'jwt.refExpDurationInSecond',
-    );
     const token = await this.jwtHelper.create({
       sub: user.id,
-      iat: currentSecond,
-      exp: currentSecond + jwtExpDurationInSecond,
-      ref_exp: currentSecond + jwtRefExpDurationInSecond,
     });
 
     return res.cookie(Cookie.Token, token).json({
       data: UserDto.fromDomain(user),
+    });
+  }
+
+  async refresh(req: Request, res: Response): Promise<any> {
+    const token = req.cookies[Cookie.Token];
+
+    if (!token) {
+      throw new UnauthenticatedException();
+    }
+
+    const refreshedToken = await this.jwtHelper.refresh(token);
+
+    return res.cookie(Cookie.Token, refreshedToken).json({
+      message: 'OK',
     });
   }
 
