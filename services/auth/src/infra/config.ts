@@ -14,6 +14,10 @@ export function createConfig(): Config {
     db: {
       host: env.DB_HOST || 'mongodb://localhost:27017/auth',
     },
+    jwt: {
+      expDurationInSecond: 30 * 60,
+      refExpDurationInSecond: 60 * 60 * 24 * 14,
+    },
     stan: {
       clusterId: env.STAN_CLUSTER_ID || 'sc-tech-test',
       clientId: env.STAN_CLIENT_ID || 'service-auth',
