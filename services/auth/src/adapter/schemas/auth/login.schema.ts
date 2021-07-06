@@ -5,7 +5,7 @@ import { RequestPayloadSchema } from '@/common';
 export class LoginSchema implements RequestPayloadSchema {
   async get(req: Request, joi: Joi.Root): Promise<Joi.ObjectSchema> {
     return joi.object({
-      email: joi.string().required().email(),
+      username: joi.string().required().token(),
       password: joi.string().required().min(8),
     });
   }

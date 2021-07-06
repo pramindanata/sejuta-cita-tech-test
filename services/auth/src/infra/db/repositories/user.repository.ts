@@ -1,7 +1,9 @@
+import { singleton } from 'tsyringe';
 import { UserRepositoryContract } from '@/contract';
 import { User } from '@/domain';
 import { UserModel, UserModelMapper } from '../models';
 
+@singleton()
 export class UserRepository implements UserRepositoryContract {
   async getDetail(id: string): Promise<User | undefined> {
     const user = await UserModel.findById(id);

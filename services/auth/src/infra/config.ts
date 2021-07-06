@@ -11,7 +11,7 @@ export function createConfig(): Config {
       secret: env.APP_SECRET || 'my_secret_123',
     },
     db: {
-      host: env.DB_HOST || 'mongodb://localhost:27017/auth-service',
+      host: env.DB_HOST || 'mongodb://localhost:27017/auth',
     },
   };
 }

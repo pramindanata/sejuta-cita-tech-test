@@ -7,4 +7,6 @@ moduleAlias.addAlias('@', __dirname);
 
 import { bootstrap } from '@/infra';
 
-bootstrap();
+bootstrap().catch((err) => {
+  throw err;
+});
