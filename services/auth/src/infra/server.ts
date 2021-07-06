@@ -22,7 +22,6 @@ export function createServer(): Express {
 
   server.post(
     '/login',
-    m(Guest),
     m(SchemaValidator, { body: LoginSchema }),
     c(AuthController, 'login'),
   );

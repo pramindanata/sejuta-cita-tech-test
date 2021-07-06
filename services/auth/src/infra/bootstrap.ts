@@ -10,6 +10,7 @@ export async function bootstrap(): Promise<void> {
   await mongoose.connect(dbHost, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   });
 
   const server = createServer();

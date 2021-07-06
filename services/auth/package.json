@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "nodemon",
     "lint": "eslint \"./**/*.{js,ts,tsx}\"",
+    "seed:run": "node ./dist/infra/db/seeder/seed.js",
+    "seed:clear": "node ./dist/infra/db/seeder/clear.js",
     "start": "node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc"
