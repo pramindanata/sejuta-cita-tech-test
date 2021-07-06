@@ -3,7 +3,6 @@ import 'express-async-errors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import {
-  Auth,
   AuthController,
   ExceptionHandler,
   Guest,
@@ -28,7 +27,7 @@ export function createServer(): Express {
     c(AuthController, 'login'),
   );
 
-  server.post('/logout', m(Auth), c(AuthController, 'logout'));
+  server.post('/logout', c(AuthController, 'logout'));
 
   server.use(m(ExceptionHandler));
 
