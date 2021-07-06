@@ -14,7 +14,11 @@ export class UserRepository implements UserRepositoryContract {
     const { limit, page } = options;
     const skip = (page - 1) * limit;
     const totalPromise = UserModel.count();
-    const dataPromise = UserModel.find({}, undefined, { limit, skip });
+    const dataPromise = UserModel.find({}, undefined, {
+      limit,
+      skip,
+      sort: { createdAt: -1 },
+    });
     const [total, data] = await Promise.all([totalPromise, dataPromise]);
 
     return { total, data: data.map(UserModelMapper.toDomain) };

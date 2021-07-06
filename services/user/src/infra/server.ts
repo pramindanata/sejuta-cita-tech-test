@@ -7,6 +7,8 @@ import {
   ExceptionHandler,
   RequestContext,
   SchemaValidator,
+  UserController,
+  UserIndexQuerySchema,
 } from '@/adapter';
 import { wrapMiddleware as m, wrapController as c } from './server-util';
 
@@ -15,8 +17,14 @@ export function createServer(): Express {
 
   server.use(cookieParser());
   server.use(bodyParser.json());
-
   server.use(m(RequestContext));
+
+  server.get(
+    '/users',
+    m(Auth),
+    m(SchemaValidator, { query: UserIndexQuerySchema }),
+    c(UserController, 'index'),
+  );
 
   server.use(m(ExceptionHandler));
 
