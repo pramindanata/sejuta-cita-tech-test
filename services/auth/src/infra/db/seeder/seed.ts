@@ -38,7 +38,7 @@ async function seed() {
     },
     {
       _id: '60e3caf96ef0ba2c50a61be4',
-      username: 'user-a',
+      username: 'user_a',
       password: '$2b$10$0hKs.64gPU1NPXGCIJg8u.m.rO4ZDTnMqxRZn3ffXOxGRbgNjsGyy',
       role: 'USER',
       createdAt: '1625541369108',
@@ -46,7 +46,7 @@ async function seed() {
     },
     {
       _id: '60e3caf96ef0ba2c50a61be5',
-      username: 'user-b',
+      username: 'user_b',
       password: '$2b$10$0hKs.64gPU1NPXGCIJg8u.m.rO4ZDTnMqxRZn3ffXOxGRbgNjsGyy',
       role: 'USER',
       createdAt: '1625541369108',
@@ -54,7 +54,7 @@ async function seed() {
     },
     {
       _id: '60e3caf96ef0ba2c50a61be6',
-      username: 'user-c',
+      username: 'user_c',
       password: '$2b$10$0hKs.64gPU1NPXGCIJg8u.m.rO4ZDTnMqxRZn3ffXOxGRbgNjsGyy',
       role: 'USER',
       createdAt: '1625541369108',
@@ -62,7 +62,7 @@ async function seed() {
     },
     {
       _id: '60e3caf96ef0ba2c50a61be7',
-      username: 'user-d',
+      username: 'user_d',
       password: '$2b$10$0hKs.64gPU1NPXGCIJg8u.m.rO4ZDTnMqxRZn3ffXOxGRbgNjsGyy',
       role: 'USER',
       createdAt: '1625541369108',
