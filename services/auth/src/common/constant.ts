@@ -8,6 +8,12 @@ export enum Token {
   UserRepository = 'UserRepository',
 }
 
+export enum PubSubSubject {
+  UserCreated = 'UserCreated',
+  UserUpdated = 'UserUpdated',
+  UserDeleted = 'UserDeleted',
+}
+
 export const Regex = {
   Number: /^\d+$/,
 };

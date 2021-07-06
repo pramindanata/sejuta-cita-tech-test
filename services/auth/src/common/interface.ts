@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { ErrorRequestHandler, Request, RequestHandler } from 'express';
+import { Message } from 'node-nats-streaming';
 import { User } from '@/domain';
 import { Env } from './constant';
 
@@ -11,6 +12,7 @@ export type ReqParams<T> = T & {
 
 export interface Config {
   app: {
+    name: string;
     env: Env;
     host: string;
     port: number;
@@ -19,14 +21,23 @@ export interface Config {
   db: {
     host: string;
   };
+  stan: {
+    clientId: string;
+    clusterId: string;
+    url: string;
+  };
 }
 
 export interface ConfigKey {
+  'app.name': string;
   'app.host': string;
   'app.env': Env;
   'app.port': number;
   'app.secret': string;
   'db.host': string;
+  'stan.clientId': string;
+  'stan.clusterId': string;
+  'stan.url': string;
 }
 
 export interface Pagination<T = any> {
@@ -53,4 +64,8 @@ export interface ExceptionMiddlewareFactory {
 
 export interface RequestPayloadSchema {
   get(req: Request, joi: Joi.Root): Promise<Joi.ObjectSchema>;
+}
+
+export interface PubSubSubscriber {
+  handle(data: any, message: Message): Promise<void>;
 }

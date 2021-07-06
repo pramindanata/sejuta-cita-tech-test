@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import {
   AuthController,
   ExceptionHandler,
-  Guest,
   LoginSchema,
   RequestContext,
   SchemaValidator,

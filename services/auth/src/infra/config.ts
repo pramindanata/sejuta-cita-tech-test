@@ -5,6 +5,7 @@ export function createConfig(): Config {
 
   return {
     app: {
+      name: env.APP_NAME || 'service_auth',
       env: (env.NODE_ENV as Env) || Env.Development,
       host: env.APP_HOST || 'localhost',
       port: (env.APP_PORT && parseInt(env.APP_PORT)) || 4001,
@@ -12,6 +13,11 @@ export function createConfig(): Config {
     },
     db: {
       host: env.DB_HOST || 'mongodb://localhost:27017/auth',
+    },
+    stan: {
+      clusterId: env.STAN_CLUSTER_ID || 'sc-tech-test',
+      clientId: env.STAN_CLIENT_ID || 'service-auth',
+      url: env.STAN_URL || 'http://localhost:4221',
     },
   };
 }
