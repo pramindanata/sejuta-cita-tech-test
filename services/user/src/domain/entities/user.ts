@@ -14,6 +14,10 @@ export class User {
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
   }
+
+  isAdmin(): boolean {
+    return this.role === UserRole.Admin;
+  }
 }
 
 export enum UserRole {

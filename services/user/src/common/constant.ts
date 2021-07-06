@@ -18,6 +18,14 @@ export enum Cookie {
   Token = 'token',
 }
 
+export enum PolicyAction {
+  ViewAny = 'viewAny',
+  View = 'view',
+  Create = 'create',
+  Update = 'update',
+  Delete = 'delete',
+}
+
 export enum Env {
   Development = 'development',
   Production = 'production',

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { singleton } from 'tsyringe';
 import { User, UserUseCase } from '@/domain';
-import { PaginationOptions, ReqParams, ReqQuery } from '@/common';
+import { PaginationOptions, PolicyAction, ReqParams, ReqQuery } from '@/common';
 import { UserDto } from '../dto';
-import { NotFoundException } from '../exception';
+import { NotFoundException, UnauthorizedException } from '../exception';
 
 @singleton()
 export class UserController {
@@ -13,6 +13,12 @@ export class UserController {
     req: Request<any, any, any, IndexReqQuery>,
     res: Response,
   ): Promise<any> {
+    const { ability } = req.ctx;
+
+    if (ability!.cannot(PolicyAction.ViewAny, User)) {
+      throw new UnauthorizedException();
+    }
+
     const { limit, page } = req.query;
     const { total, data } = await this.userUseCase.getPagination({
       limit,
@@ -26,11 +32,16 @@ export class UserController {
   }
 
   async show(req: Request<ShowReqParams>, res: Response): Promise<any> {
+    const { ability } = req.ctx;
     const { userId } = req.params;
     const user = await this.userUseCase.getDetail(userId);
 
     if (!user) {
       throw new NotFoundException();
+    }
+
+    if (ability!.cannot(PolicyAction.View, user)) {
+      throw new UnauthorizedException();
     }
 
     return res.json({
@@ -42,6 +53,12 @@ export class UserController {
     req: Request<any, any, CreateReqBody>,
     res: Response,
   ): Promise<any> {
+    const { ability } = req.ctx;
+
+    if (ability!.cannot(PolicyAction.Create, User)) {
+      throw new UnauthorizedException();
+    }
+
     const { username, password } = req.body;
     const newUser = await this.userUseCase.create({ username, password });
 
@@ -54,12 +71,17 @@ export class UserController {
     req: Request<ShowReqParams, any, CreateReqBody>,
     res: Response,
   ): Promise<any> {
+    const { ability } = req.ctx;
     const { userId } = req.params;
     const { username, password } = req.body;
     const user = await this.userUseCase.getDetail(userId);
 
     if (!user) {
       throw new NotFoundException();
+    }
+
+    if (ability!.cannot(PolicyAction.Update, user)) {
+      throw new UnauthorizedException();
     }
 
     const updatedUser = await this.userUseCase.update(user, {
@@ -73,11 +95,16 @@ export class UserController {
   }
 
   async delete(req: Request<ShowReqParams>, res: Response): Promise<any> {
+    const { ability } = req.ctx;
     const { userId } = req.params;
     const user = await this.userUseCase.getDetail(userId);
 
     if (!user) {
       throw new NotFoundException();
+    }
+
+    if (ability!.cannot(PolicyAction.Delete, user)) {
+      throw new UnauthorizedException();
     }
 
     await this.userUseCase.delete(user);

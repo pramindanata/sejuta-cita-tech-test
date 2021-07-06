@@ -5,6 +5,7 @@ import { Token } from '@/common';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
 import { UserRepository } from './db';
+import { User, UserPolicy } from '@/domain';
 
 const container = baseContainer;
 
@@ -17,7 +18,9 @@ container.register(Token.Config, {
 });
 
 container.register(Token.PolicyDict, {
-  useValue: {},
+  useValue: {
+    [User.name]: UserPolicy,
+  },
 });
 
 container.register(Token.AbilityFactory, {
