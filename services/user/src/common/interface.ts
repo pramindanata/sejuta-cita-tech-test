@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { ErrorRequestHandler, Request, RequestHandler } from 'express';
 import { Ability } from 'policy-authorization';
 import { User } from '@/domain';
-import { Env } from './constant';
+import { Env, PubSubSubject } from './constant';
 
 export type Ctor<T = Record<string, any>> = new (...args: any[]) => T;
 export type ReqQuery<T> = T & qs.ParsedQs;
@@ -53,6 +53,21 @@ export interface PaginationOptions {
 export interface RequestContext {
   user?: User;
   ability?: Ability;
+}
+
+export interface UserMessageData {
+  id: string;
+  username: string;
+  password: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PubSubPublisherDataDict {
+  [PubSubSubject.UserCreated]: UserMessageData;
+  [PubSubSubject.UserUpdated]: UserMessageData;
+  [PubSubSubject.UserDeleted]: UserMessageData;
 }
 
 export interface MiddlewareFactory {

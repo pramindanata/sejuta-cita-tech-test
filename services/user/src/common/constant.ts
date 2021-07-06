@@ -26,6 +26,12 @@ export enum PolicyAction {
   Delete = 'delete',
 }
 
+export enum PubSubSubject {
+  UserCreated = 'UserCreated',
+  UserUpdated = 'UserUpdated',
+  UserDeleted = 'UserDeleted',
+}
+
 export enum Env {
   Development = 'development',
   Production = 'production',
