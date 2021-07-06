@@ -2,9 +2,9 @@ import { container as baseContainer, instanceCachingFactory } from 'tsyringe';
 import { AbilityFactory } from 'policy-authorization';
 import joi from 'joi';
 import { Token } from '@/common';
-import { Post, PostPolicy } from '@/domain';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
+import { UserRepository } from './db';
 
 const container = baseContainer;
 
@@ -17,9 +17,7 @@ container.register(Token.Config, {
 });
 
 container.register(Token.PolicyDict, {
-  useValue: {
-    [Post.name]: PostPolicy,
-  },
+  useValue: {},
 });
 
 container.register(Token.AbilityFactory, {
@@ -40,6 +38,10 @@ container.register(Token.JwtHelper, {
 
 container.register(Token.CryptHelper, {
   useFactory: (c) => c.resolve(CryptHelper),
+});
+
+container.register(Token.UserRepostory, {
+  useFactory: (c) => c.resolve(UserRepository),
 });
 
 container.register(Token.Joi, {

@@ -7,6 +7,7 @@ export enum Token {
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',
+  UserRepostory = 'UserRepostory',
 }
 
 export const Regex = {
