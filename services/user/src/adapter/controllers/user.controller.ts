@@ -1,13 +1,26 @@
 import { Request, Response } from 'express';
-import { singleton } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { User, UserUseCase } from '@/domain';
-import { PaginationOptions, PolicyAction, ReqParams, ReqQuery } from '@/common';
+import {
+  Event,
+  PaginationOptions,
+  PolicyAction,
+  ReqParams,
+  ReqQuery,
+  Token,
+} from '@/common';
+import { EventEmitterContract } from '@/contract';
 import { UserDto } from '../dto';
 import { NotFoundException, UnauthorizedException } from '../exception';
 
 @singleton()
 export class UserController {
-  constructor(private userUseCase: UserUseCase) {}
+  constructor(
+    private userUseCase: UserUseCase,
+
+    @inject(Token.EventEmitter)
+    private eventEmitter: EventEmitterContract,
+  ) {}
 
   async index(
     req: Request<any, any, any, IndexReqQuery>,
@@ -62,6 +75,8 @@ export class UserController {
     const { username, password } = req.body;
     const newUser = await this.userUseCase.create({ username, password });
 
+    this.eventEmitter.emit(Event.UserCreated, newUser);
+
     return res.json({
       data: UserDto.fromDomain(newUser),
     });
@@ -89,6 +104,8 @@ export class UserController {
       password,
     });
 
+    this.eventEmitter.emit(Event.UserUpdated, updatedUser);
+
     return res.json({
       data: UserDto.fromDomain(updatedUser),
     });
@@ -108,6 +125,8 @@ export class UserController {
     }
 
     await this.userUseCase.delete(user);
+
+    this.eventEmitter.emit(Event.UserDeleted, user);
 
     return res.json({
       data: UserDto.fromDomain(user),

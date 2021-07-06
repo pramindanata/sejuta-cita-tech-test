@@ -81,3 +81,7 @@ export interface ExceptionMiddlewareFactory {
 export interface RequestPayloadSchema {
   get(req: Request, joi: Joi.Root): Promise<Joi.ObjectSchema>;
 }
+
+export interface EventListener {
+  handle(data: any): Promise<void>;
+}

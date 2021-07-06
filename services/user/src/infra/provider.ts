@@ -2,10 +2,11 @@ import { container as baseContainer, instanceCachingFactory } from 'tsyringe';
 import { AbilityFactory } from 'policy-authorization';
 import joi from 'joi';
 import { Token } from '@/common';
+import { User, UserPolicy } from '@/domain';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
 import { UserRepository } from './db';
-import { User, UserPolicy } from '@/domain';
+import { EventEmitter } from './event-emitter';
 
 const container = baseContainer;
 
@@ -15,6 +16,10 @@ container.register(Token.Container, {
 
 container.register(Token.Config, {
   useValue: createConfig(),
+});
+
+container.register(Token.EventEmitter, {
+  useFactory: (c) => c.resolve(EventEmitter),
 });
 
 container.register(Token.PolicyDict, {

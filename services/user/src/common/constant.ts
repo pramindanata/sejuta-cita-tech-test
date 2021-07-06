@@ -4,6 +4,7 @@ export enum Token {
   Joi = 'Joi',
   PolicyDict = 'PolicyDict',
   AbilityFactory = 'AbilityFactory',
+  EventEmitter = 'EventEmitter',
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',
@@ -27,6 +28,12 @@ export enum PolicyAction {
 }
 
 export enum PubSubSubject {
+  UserCreated = 'UserCreated',
+  UserUpdated = 'UserUpdated',
+  UserDeleted = 'UserDeleted',
+}
+
+export enum Event {
   UserCreated = 'UserCreated',
   UserUpdated = 'UserUpdated',
   UserDeleted = 'UserDeleted',
