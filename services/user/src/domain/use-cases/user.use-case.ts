@@ -48,7 +48,7 @@ export class UserUseCase {
     const { username, password } = props;
     const otherUser = await this.userRepo.getDetailByUsername(username);
 
-    if (otherUser) {
+    if (otherUser && user.id !== otherUser.id) {
       throw new UsernameAlreadyTakenException();
     }
 

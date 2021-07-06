@@ -63,6 +63,8 @@ export class UserRepository implements UserRepositoryContract {
       createdAt: user.createdAt,
     });
 
+    userModel.isNew = false;
+
     await userModel.save();
 
     return UserModelMapper.toDomain(userModel);

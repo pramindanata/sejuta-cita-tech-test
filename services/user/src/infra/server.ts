@@ -42,6 +42,16 @@ export function createServer(): Express {
     c(UserController, 'create'),
   );
 
+  server.put(
+    '/users/:userId',
+    m(Auth),
+    m(SchemaValidator, {
+      params: UserShowParamsSchema,
+      body: UserCreateBodySchema,
+    }),
+    c(UserController, 'update'),
+  );
+
   server.use(m(ExceptionHandler));
 
   return server;

@@ -49,6 +49,28 @@ export class UserController {
       data: UserDto.fromDomain(newUser),
     });
   }
+
+  async update(
+    req: Request<ShowReqParams, any, CreateReqBody>,
+    res: Response,
+  ): Promise<any> {
+    const { userId } = req.params;
+    const { username, password } = req.body;
+    const user = await this.userUseCase.getDetail(userId);
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    const updatedUser = await this.userUseCase.update(user, {
+      username,
+      password,
+    });
+
+    return res.json({
+      data: UserDto.fromDomain(updatedUser),
+    });
+  }
 }
 
 type IndexReqQuery = ReqQuery<PaginationOptions>;
