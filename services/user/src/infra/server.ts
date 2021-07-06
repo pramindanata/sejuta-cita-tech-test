@@ -52,6 +52,15 @@ export function createServer(): Express {
     c(UserController, 'update'),
   );
 
+  server.delete(
+    '/users/:userId',
+    m(Auth),
+    m(SchemaValidator, {
+      params: UserShowParamsSchema,
+    }),
+    c(UserController, 'delete'),
+  );
+
   server.use(m(ExceptionHandler));
 
   return server;

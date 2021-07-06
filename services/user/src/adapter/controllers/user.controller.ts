@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { singleton } from 'tsyringe';
-import { UserUseCase } from '@/domain';
+import { User, UserUseCase } from '@/domain';
 import { PaginationOptions, ReqParams, ReqQuery } from '@/common';
 import { UserDto } from '../dto';
 import { NotFoundException } from '../exception';
@@ -69,6 +69,21 @@ export class UserController {
 
     return res.json({
       data: UserDto.fromDomain(updatedUser),
+    });
+  }
+
+  async delete(req: Request<ShowReqParams>, res: Response): Promise<any> {
+    const { userId } = req.params;
+    const user = await this.userUseCase.getDetail(userId);
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    await this.userUseCase.delete(user);
+
+    return res.json({
+      data: UserDto.fromDomain(user),
     });
   }
 }
