@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+  - host: sc-tech-test.dev
+    http:
+      paths:
+      - pathType: Exact
+        path: "/api/auth/?(.*)"
+        backend:
+          service:
+            name: auth-service-cluster-ip
+            port:
+              number: 4000
+      - pathType: Exact
+        path: "/api/(users/?.*)"
+        backend:
+          service:
+            name: user-service-cluster-ip
+            port:
+              number: 4000

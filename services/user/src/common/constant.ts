@@ -9,6 +9,7 @@ export enum Token {
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
   CryptHelper = 'CryptHelper',
+  ExceptionHandler = 'ExceptionHandler',
   UserRepostory = 'UserRepostory',
 }
 

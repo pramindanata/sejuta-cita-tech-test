@@ -1,5 +1,11 @@
 import Joi from 'joi';
-import { ErrorRequestHandler, Request, RequestHandler } from 'express';
+import {
+  ErrorRequestHandler,
+  Request,
+  Response,
+  RequestHandler,
+  NextFunction,
+} from 'express';
 import { Message } from 'node-nats-streaming';
 import { User } from '@/domain';
 import { Env } from './constant';
@@ -44,6 +50,14 @@ export interface ConfigKey {
   'stan.clientId': string;
   'stan.clusterId': string;
   'stan.url': string;
+}
+
+export type ExceptionContextType = 'http' | 'pubsub' | 'event-emitter';
+export type ExceptionContextTypeContext = ExceptionHttpContext | undefined;
+export interface ExceptionHttpContext {
+  req: Request;
+  res: Response;
+  next: NextFunction;
 }
 
 export interface Pagination<T = any> {

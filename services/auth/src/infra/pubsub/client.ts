@@ -5,8 +5,9 @@ import {
   Stan,
   SubscriptionOptions,
 } from 'node-nats-streaming';
-import { PubSubSubscriber } from '@/common';
+import { ExceptionContext, PubSubSubscriber } from '@/common';
 import { ConfigHelper } from '../helpers';
+import { ExceptionHandler } from '../exception-handler';
 
 @singleton()
 export class PubSubClient {
@@ -14,7 +15,10 @@ export class PubSubClient {
   private queueGroupName: string;
   private stan?: Stan;
 
-  constructor(private configHelper: ConfigHelper) {
+  constructor(
+    private configHelper: ConfigHelper,
+    private exceptionHandler: ExceptionHandler,
+  ) {
     this.queueGroupName = this.configHelper.get('app.name');
   }
 
@@ -56,8 +60,9 @@ export class PubSubClient {
         const data = this.parseData(message.getData());
 
         handler.handle(data, message).catch((err) => {
-          // Fix this
-          console.error(err);
+          const ctx = new ExceptionContext('pubsub', undefined);
+
+          return this.exceptionHandler.handle(err, ctx);
         });
       });
     }

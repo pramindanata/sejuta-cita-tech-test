@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: user-mongo
+spec:
+  replicas: 1
+  serviceName: 'user-mongo-cluster-ip'
+  selector:
+    matchLabels:
+      app: user-mongo
+  template:
+    metadata:
+      labels:
+        app: user-mongo
+    spec:
+      containers:
+        - name: user-mongo
+          image: mongo:4.4.6
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: user-mongo-storage
+      volumes:
+        - name: user-mongo-storage
+          persistentVolumeClaim:
+            claimName: user-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-mongo-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: user-mongo
+  ports:
+    - name: user-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
