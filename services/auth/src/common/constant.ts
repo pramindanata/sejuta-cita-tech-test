@@ -4,6 +4,7 @@ export enum Token {
   Joi = 'Joi',
   ConfigHelper = 'ConfigHelper',
   JwtHelper = 'JwtHelper',
+  ExceptionHandler = 'ExceptionHandler',
   CryptHelper = 'CryptHelper',
   UserRepository = 'UserRepository',
 }

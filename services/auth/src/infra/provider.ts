@@ -4,6 +4,7 @@ import { Token } from '@/common';
 import { ConfigHelper, JwtHelper, CryptHelper } from './helpers';
 import { createConfig } from './config';
 import { UserRepository } from './db';
+import { ExceptionHandler } from './exception-handler';
 
 const container = baseContainer;
 
@@ -25,6 +26,10 @@ container.register(Token.JwtHelper, {
 
 container.register(Token.CryptHelper, {
   useFactory: (c) => c.resolve(CryptHelper),
+});
+
+container.register(Token.ExceptionHandler, {
+  useFactory: (c) => c.resolve(ExceptionHandler),
 });
 
 container.register(Token.UserRepository, {

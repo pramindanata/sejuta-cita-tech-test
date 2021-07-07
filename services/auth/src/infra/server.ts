@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import {
   AuthController,
-  ExceptionHandler,
+  Exception,
   LoginSchema,
   RequestContext,
   SchemaValidator,
@@ -35,7 +35,7 @@ export function createServer(): Express {
 
   server.post('/logout', c(AuthController, 'logout'));
 
-  server.use(m(ExceptionHandler));
+  server.use(m(Exception));
 
   return server;
 }
