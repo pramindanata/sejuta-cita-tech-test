@@ -11,14 +11,14 @@ spec:
   - host: sc.pramindanata-a1.xyz
     http:
       paths:
-      - pathType: Prefix
+      - pathType: Exact
         path: "/api/auth/?(.*)"
         backend:
           service:
             name: auth-service-cluster-ip
             port:
               number: 4000
-      - pathType: Prefix
+      - pathType: Exact
         path: "/api/(users/?.*)"
         backend:
           service:
