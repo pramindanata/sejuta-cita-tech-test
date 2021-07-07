@@ -29,10 +29,18 @@ export class ExceptionContext {
   }
 
   getPubSubContext(): undefined {
+    if (this.type !== 'pubsub') {
+      throw new Error('Invalid type selected');
+    }
+
     return undefined;
   }
 
   getEventEmitterContext(): undefined {
+    if (this.type !== 'event-emitter') {
+      throw new Error('Invalid type selected');
+    }
+
     return undefined;
   }
 }

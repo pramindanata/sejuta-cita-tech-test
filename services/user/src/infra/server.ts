@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import {
   Auth,
-  ExceptionHandler,
+  Exception,
   RequestContext,
   SchemaValidator,
   UserController,
@@ -67,7 +67,7 @@ export function createServer(): Express {
     c(UserController, 'delete'),
   );
 
-  server.use(m(ExceptionHandler));
+  server.use(m(Exception));
 
   return server;
 }

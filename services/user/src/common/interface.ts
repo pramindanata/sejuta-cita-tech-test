@@ -1,5 +1,11 @@
 import Joi from 'joi';
-import { ErrorRequestHandler, Request, RequestHandler } from 'express';
+import {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from 'express';
 import { Ability } from 'policy-authorization';
 import { User } from '@/domain';
 import { Env, Event, PubSubSubject } from './constant';
@@ -38,6 +44,14 @@ export interface ConfigKey {
   'stan.clientId': string;
   'stan.clusterId': string;
   'stan.url': string;
+}
+
+export type ExceptionContextType = 'http' | 'pubsub' | 'event-emitter';
+export type ExceptionContextTypeContext = ExceptionHttpContext | undefined;
+export interface ExceptionHttpContext {
+  req: Request;
+  res: Response;
+  next: NextFunction;
 }
 
 export interface Pagination<T = any> {
