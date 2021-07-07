@@ -17,6 +17,7 @@ import { wrapMiddleware as m, wrapController as c } from './server-util';
 export function createServer(): Express {
   const server = express();
 
+  server.set('trust proxy', true);
   server.use(cookieParser());
   server.use(bodyParser.json());
   server.use(m(RequestContext));
