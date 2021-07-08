@@ -1,0 +1,392 @@
+openapi: 3.0.0
+
+info:
+  title: Sejuta Cita Tech Test
+  description: User CRUD but with microservices approach.
+  version: 1.0.0
+
+servers:
+  - description: Production Server
+    url: http://sc.pramindanata-a1.xyz/api
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/pramindanata/sc-tech-test/1.0.0
+
+tags:
+  - name: Auth
+  - name: Users
+
+security:
+  - cookieAuth: []
+
+paths:
+  /auth/login:
+    post:
+      description: Sign in to retrieve token for authentication process.
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredential'
+      responses:
+        '200':
+          description:  >
+            Successfully authenticated.
+            The token is returned in a cookie and response's body named `token`. You need to include this cookie in subsequent requests.
+          headers:
+            Set-Cookie:
+              schema: 
+                type: string
+                example: token=my_secret_jwt; Path=/
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Token'
+        '403':
+          $ref: '#/components/responses/InvalidCredentialGivenException'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityException'
+  /auth/logout:
+    post:
+      description: Remove `token` cookie to sign out user.
+      tags:
+        - Auth
+      security: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: OK
+  
+  /auth/token/refresh:
+    post:
+      description: Refresh provided token.
+      tags:
+        - Auth
+      security: []
+      parameters:
+        - name: token
+          in: cookie
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  >
+            Successfully refreshed.
+            Refreshed token is returned in a cookie and response's body named `token`. You need to include this cookie in subsequent requests.
+          headers:
+            Set-Cookie:
+              schema: 
+                type: string
+                example: token=my_secret_jwt; Path=/
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Token'
+        '401':
+          description: Invalid token or no token provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedExceptionBody'
+  
+  /users:
+    get:
+      description: Retrieve user list.
+      tags:
+        - Users
+      parameters:
+        - name: page
+          description: Specifiy the page number of users to be displayed
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          description: Limit the number of item on a page
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  total:
+                    type: number
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedException'
+        '403':
+          $ref: '#/components/responses/UnauthorizedException'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityException'
+    post:
+      description: Create new user with role `User`.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredential'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserDetail'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedException'
+        '403':
+          description: User action is not unauthorized
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedExceptionBody'
+                  - $ref: '#/components/schemas/UsernameAlreadyTakenExceptionBody'
+                example:
+                  info: "**Click schema definition**"
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityException'
+  
+  /users/{userId}:
+    get:
+      description: Retrieve user detail.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserDetail'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedException'
+        '403':
+          $ref: '#/components/responses/UnauthorizedException'
+        '404':
+          $ref: '#/components/responses/NotFoundException'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityException'
+    put:
+      description: Update user credential.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredential'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserDetail'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedException'
+        '403':
+          description: User action is not unauthorized
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedExceptionBody'
+                  - $ref: '#/components/schemas/UsernameAlreadyTakenExceptionBody'
+                example:
+                  info: "**Click schema definition**"
+        '404':
+          $ref: '#/components/responses/NotFoundException'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityException'
+    delete:
+      description: Delete user data.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserDetail'
+        '401':
+          $ref: '#/components/responses/UnauthenticatedException'
+        '403':
+          $ref: '#/components/responses/UnauthorizedException'
+        '404':
+          $ref: '#/components/responses/NotFoundException'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityException'
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+
+  schemas:
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        role:
+          type: string
+        createdAt:
+          type: string
+    UserCredential:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    UnauthenticatedExceptionBody:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthenticated
+    UnauthorizedExceptionBody:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized
+    NotFoundExceptionBody:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Not found
+    UnprocessableEntityExceptionBody:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unprocessable Entity
+        data:
+          type: object
+          properties:
+            invalid:
+              type: object
+              properties:
+                keyA:
+                  type: array
+                  items: 
+                    type: string
+                    example: some message
+                keyB:
+                  type: array
+                  items: 
+                    type: string
+                    example: some message
+            source:
+              type: string
+              example: body | params | query
+    InvalidCredentialGivenExceptionBody:
+      type: object
+      properties:
+        domain:
+          type: boolean
+          example: true
+        name:
+          type: string
+          example: UsernameAlreadyTakenException
+        message:
+          type: string
+          example: Username already taken
+    UsernameAlreadyTakenExceptionBody:
+      type: object
+      properties:
+        domain:
+          type: boolean
+          example: true
+        name:
+          type: string
+          example: UsernameAlreadyTakenException
+        message:
+          type: string
+          example: Username already taken
+
+  parameters:
+    UserIdParam:
+      name: userId
+      required: true
+      in: path
+      schema:
+        type: string
+
+  responses:
+    UserDetail:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/User'
+    NotFoundException:
+      description: Data is not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFoundExceptionBody'
+    UnauthenticatedException:
+      description: User is not authenticated
+      content:
+        application/json:
+          schema:
+           $ref: '#/components/schemas/UnauthenticatedExceptionBody'
+    UnauthorizedException:
+      description: User action is not authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedExceptionBody'
+    UnprocessableEntityException:
+      description: Given query/params/body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnprocessableEntityExceptionBody'
+    InvalidCredentialGivenException:
+      description: Invalid credentials given
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvalidCredentialGivenExceptionBody'
+    UsernameAlreadyTakenException:
+      description: Invalid credentials given
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UsernameAlreadyTakenExceptionBody'
