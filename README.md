@@ -14,7 +14,7 @@ This repository contain 2 services, namely:
 - `auth-service`: Service for user authentication, such as login, logout, and refresh token.
 - `user-service`: Service for user CRUD.
 
-Both of them use `Node.js` (v14.17) and `MongoDB` (v4.4). There is also `NATS Streaming` (v0.22) which is used a as message broker for communication between services.
+Both of them use `Node.js` (v14.17) and `MongoDB` (v4.4). There is also `NATS Streaming` (v0.22) which is used as a message broker for communication between services.
 
 ## User Authorization
 
