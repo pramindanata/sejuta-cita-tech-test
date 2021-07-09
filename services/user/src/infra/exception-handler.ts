@@ -26,7 +26,7 @@ export class ExceptionHandler implements ExceptionHandlerContract {
   }
 
   private handleHttpException(err: Error, ctx: ExceptionContext): any {
-    const { res } = ctx.getHttpContext();
+    const { res, next } = ctx.getHttpContext();
     const env = this.configHelper.get('app.env');
 
     if (err instanceof BaseDomainException) {
@@ -52,5 +52,7 @@ export class ExceptionHandler implements ExceptionHandlerContract {
 
       return res.status(500).json(err.message);
     }
+
+    return next(err);
   }
 }
