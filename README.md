@@ -9,7 +9,7 @@ Admin credentials:
 
 ## Microservices Architecture
 
-The microservices contain 2 service, namely:
+This repository contain 2 services, namely:
 
 - `auth-service`: Service for user authentication, such as login, logout, and refresh token.
 - `user-service`: Service for user CRUD.
@@ -51,7 +51,7 @@ kubectl create secret generic app-secret --from-literal APP_SECRET=<app_secret_v
 
 ## Token Refresh Mechanism
 
-This microservices use JWT as the authentication token. Created token contains 4 claims namely:
+The microservices use JWT as the authentication token. Created token contains 4 claims namely:
 
 - `iat`: when the token issued (`int`).
 - `sub`: user ID (`string`).
