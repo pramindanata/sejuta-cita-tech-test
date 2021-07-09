@@ -4,11 +4,15 @@ k8s_yaml([
   './k8s/base/user-service.yml',
   './k8s/base/user-mongo.yml',
   './k8s/base/stan.yml',
-  './k8s/dev/auth-pvc.yml',
-  './k8s/dev/user-pvc.yml',
-  './k8s/dev/stan-pvc.yml',
   './k8s/dev/ingress.yml',
 ])
+
+if config.tilt_subcommand == 'up':
+  k8s_yaml([
+    './k8s/dev/auth-pvc.yml',
+    './k8s/dev/user-pvc.yml',
+    './k8s/dev/stan-pvc.yml',
+  ])
 
 docker_build(
   'pramindanata/sc-auth',
