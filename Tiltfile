@@ -5,6 +5,7 @@ k8s_yaml([
   './k8s/base/user-mongo.yml',
   './k8s/base/stan.yml',
   './k8s/dev/ingress.yml',
+  './k8s/dev/secret.yml',
 ])
 
 if config.tilt_subcommand == 'up':

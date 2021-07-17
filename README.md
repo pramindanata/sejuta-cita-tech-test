@@ -43,8 +43,6 @@ K8S configuration files can be found inside `./k8s` folder. It contains 3 folder
 - `dev`: contains K8S object configurations for dev/local env only. PVC objects claim less spaces and has no load balancer.
 - `prod`: contains K8S object configurations for prod env only. PVC objects claim more spaces and has Digital Ocean load balancer.
 
-Some objects need opaque `APP_SECRET` value from secret object named `app-secret`. Make sure to create this `app-secret` object in K8S cluster by running `kubectl create secret` command, for example:
-
 ```sh
 kubectl create secret generic app-secret --from-literal APP_SECRET=<app_secret_value>
 ```
@@ -70,6 +68,8 @@ Make sure to create `app-secret` object and install `ingress-nginx` in K8S clust
 
 Note: *Current implementation uses Digital Ocean Kubernetes service*
 
+Some objects need opaque `APP_SECRET` value from secret object named `app-secret`. Make sure to create this `app-secret` object in K8S cluster by running `kubectl create secret` command, for example:
+
 Before applying K8S config files to prod cluster, change hostname values inside `./k8s/prod/ingress.yml` to the name that will be used. Change the value of this properties:
 
 - `spec.rules[].host`
@@ -83,7 +83,9 @@ kubectl apply -f ./k8s/base -f ./k8s/prod
 
 #### Dev/Local Environment
 
-Before applying K8S config files to local cluster, change hostname value inside `./k8s/dev/ingress.yml` to the name that will be used. Change the value of property `spec.rules[].host`. Make sure to add given hostname to OS `hosts` file and point it to `127.0.0.1`. Then run the command below:
+Before applying K8S config files to local cluster, change hostname value inside `./k8s/dev/ingress.yml` to the name that will be used. Change the value of property `spec.rules[].host`.
+
+Make sure to add given hostname to OS `hosts` file and point it to `127.0.0.1` (or to another IP address if you use something like Minikube, use `minikube ip` command to find it out). Then run the command below:
 
 ```sh
 kubectl apply -f ./k8s/base -f ./k8s/dev
