@@ -41,6 +41,10 @@ export function executeCommand(command: string): Promise<string> {
         return reject(error);
       }
 
+      if (errorText) {
+        return reject(errorText);
+      }
+
       if (!successText) {
         const error = new NoBufferOnProcessError();
 
