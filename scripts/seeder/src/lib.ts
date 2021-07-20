@@ -5,6 +5,25 @@ export enum ExitCode {
   Zero = 0,
 }
 
+export async function executeInPodCommandBatch(
+  options: Options,
+): Promise<void> {
+  const { command, podLabels, setProcessTitle } = options;
+  const kubectlCommand = process.env.KUBECTL_COMMAND;
+  const getPodsInfoCommand = `${kubectlCommand} get pods`;
+  const podsInformation = await executeCommand(getPodsInfoCommand);
+  const podNames = getPodNames(podLabels, podsInformation);
+
+  for (const podName of podNames) {
+    const seedCommand = `${kubectlCommand} exec -t ${podName} -- ${command}`;
+    const title = setProcessTitle(podName);
+
+    console.log(title);
+    const outputText = await executeCommand(seedCommand);
+    console.log(outputText);
+  }
+}
+
 export function getPodNames(
   appLabels: string[],
   podsInformation: string,
@@ -34,15 +53,11 @@ export function executeCommand(command: string): Promise<string> {
       shell: true,
     });
 
-    process.on('close', (code) => {
-      if (code === 1) {
-        const error = new ProcessExitError(errorText);
+    process.on('close', () => {
+      if (errorText) {
+        const error = new ProcessFailError(errorText);
 
         return reject(error);
-      }
-
-      if (errorText) {
-        return reject(errorText);
       }
 
       if (!successText) {
@@ -76,12 +91,18 @@ export class NoBufferOnProcessError extends Error {
   }
 }
 
-export class ProcessExitError extends Error {
+export class ProcessFailError extends Error {
   constructor(private errorText: string) {
-    super(`Process exit with code ${ExitCode.One}`);
+    super(`Process fail. Error:\n${errorText}`);
   }
 
   getText(): string {
     return this.errorText;
   }
+}
+
+interface Options {
+  podLabels: string[];
+  command: string;
+  setProcessTitle: (podName: string) => string;
 }
